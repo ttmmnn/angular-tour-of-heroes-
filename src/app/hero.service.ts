@@ -54,6 +54,16 @@ export class HeroService {
     );
   }
 
+  // DELETE: サーバーからヒーローを削除する
+  deleteHero(id: number): Observable<Hero> {
+    const url = `${this.heroesURL}/${id}`;
+
+    return this.http.delete<Hero>(url, this.httpOptions).pipe(
+      tap((_) => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
+
   // 失敗したHttp操作を処理する
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
